@@ -66,7 +66,7 @@ export default function Page() {
           title="Security"
           description="Session and authentication policies for all roles."
         >
-          <div className="space-y-6 divide-y divide-sky-100/90 dark:divide-sky-800/50">
+          <div className="space-y-6 divide-y divide-sky-200/70">
             <ToggleRow
               label="Require MFA for Super Admin"
               description="TOTP or WebAuthn for super admin sign-in."
@@ -106,7 +106,7 @@ export default function Page() {
           title="Notifications"
           description="Outbound messaging and in-app alerts."
         >
-          <div className="space-y-6 divide-y divide-sky-100/90 dark:divide-sky-800/50">
+          <div className="space-y-6 divide-y divide-sky-200/70">
             <ToggleRow
               label="Email notifications"
               description="Session reminders, queue alerts, and weekly digests."

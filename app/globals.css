@@ -135,3 +135,9 @@ body {
     transform: none;
   }
 }
+
+/* Super Admin shell — matches auth (Fraunces + DM Sans via --font-sa-display / --font-sa-sans) */
+.sa-page-title,
+.sa-panel-title {
+  font-family: var(--font-sa-display), ui-serif, Georgia, serif;
+}

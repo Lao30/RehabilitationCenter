@@ -59,12 +59,12 @@ export default function Page() {
               type="search"
               placeholder="Search message or source…"
               disabled
-              className="min-w-0 flex-1 rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm dark:border-sky-700 dark:bg-sky-950"
+              className="min-w-0 flex-1 rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900"
               aria-label="Search logs"
             />
             <div className="flex flex-wrap gap-2">
               <select
-                className="rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-xs font-medium dark:border-sky-700 dark:bg-sky-950"
+                className="rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-xs font-medium text-slate-800"
                 defaultValue="all"
                 disabled
                 aria-label="Filter by level"
@@ -75,7 +75,7 @@ export default function Page() {
                 <option value="error">Error</option>
               </select>
               <select
-                className="rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-xs font-medium dark:border-sky-700 dark:bg-sky-950"
+                className="rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-xs font-medium text-slate-800"
                 defaultValue="24h"
                 disabled
                 aria-label="Time range"
@@ -99,14 +99,14 @@ export default function Page() {
           <TBody>
             {DEMO_LOG_ENTRIES.map((row) => (
               <TR key={row.id}>
-                <TD className="whitespace-nowrap font-mono text-xs text-sky-700 dark:text-sky-300">
+                <TD className="whitespace-nowrap font-mono text-xs text-slate-600">
                   {formatTimestamp(row.at)}
                 </TD>
                 <TD>
                   <LogLevelBadge level={row.level} />
                 </TD>
                 <TD className="font-mono text-xs">{row.source}</TD>
-                <TD className="max-w-md text-sky-800 dark:text-sky-200">
+                <TD className="max-w-md text-slate-600">
                   {row.message}
                 </TD>
               </TR>

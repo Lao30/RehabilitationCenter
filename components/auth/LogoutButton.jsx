@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function LogoutButton() {
+/** @param {{ className?: string }} props */
+export default function LogoutButton({ className = "" }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
 
@@ -23,7 +24,7 @@ export default function LogoutButton() {
       type="button"
       onClick={logout}
       disabled={pending}
-      className="rounded-lg border border-sky-200/90 bg-white/80 px-3 py-1.5 text-sm font-medium text-sky-800 shadow-sm transition hover:bg-sky-50 disabled:opacity-60 dark:border-sky-700 dark:bg-sky-950/50 dark:text-sky-100 dark:hover:bg-sky-900/60"
+      className={`rounded-xl border border-sky-200/90 bg-white/90 px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm shadow-sky-100/40 transition hover:bg-white disabled:opacity-60 dark:border-sky-700 dark:bg-sky-950/50 dark:text-sky-100 dark:hover:bg-sky-900/60 ${className}`}
     >
       {pending ? "Signing out…" : "Sign out"}
     </button>

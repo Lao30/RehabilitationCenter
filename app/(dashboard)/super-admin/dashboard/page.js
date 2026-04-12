@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SuperAdminPageHeader } from "@/components/dashboard/super-admin/PageChrome";
 import { pingDatabase } from "@/lib/db";
 import { ROLES } from "@/constants/roles";
 import { SEED_USERS } from "@/lib/seed-users";
@@ -38,17 +39,15 @@ async function getDbStatus() {
 
 function StatCard({ label, value, hint }) {
   return (
-    <div className="rounded-2xl border border-sky-100/90 bg-white/90 p-5 shadow-sm backdrop-blur-sm dark:border-sky-800/50 dark:bg-sky-950/35">
-      <p className="text-xs font-semibold uppercase tracking-wider text-sky-600/90 dark:text-sky-400/90">
+    <div className="rounded-2xl border border-sky-200/80 bg-white/55 p-5 shadow-sm shadow-sky-200/40 backdrop-blur-md">
+      <p className="text-xs font-semibold uppercase tracking-wider text-sky-600/95">
         {label}
       </p>
-      <p className="mt-2 text-3xl font-semibold tabular-nums tracking-tight text-sky-950 dark:text-sky-50">
+      <p className="sa-panel-title mt-2 text-3xl font-semibold tabular-nums tracking-tight text-slate-900">
         {value}
       </p>
       {hint ? (
-        <p className="mt-1 text-xs text-sky-700/75 dark:text-sky-300/70">
-          {hint}
-        </p>
+        <p className="mt-1 text-xs text-slate-600">{hint}</p>
       ) : null}
     </div>
   );
@@ -93,22 +92,14 @@ export default async function Page() {
 
   return (
     <div className="space-y-10">
-      <header className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-          Platform overview
-        </p>
-        <h1 className="text-2xl font-semibold tracking-tight text-sky-950 dark:text-sky-50">
-          Super Admin dashboard
-        </h1>
-        <p className="max-w-2xl text-sky-800/90 dark:text-sky-200/85">
-          High-level view of tenants, people, and infrastructure. Figures below
-          use the current demo directory until the database is wired for live
-          data.
-        </p>
-      </header>
+      <SuperAdminPageHeader
+        eyebrow="Platform overview"
+        title="Super Admin dashboard"
+        description="High-level view of tenants, people, and infrastructure. Figures below use the current demo directory until the database is wired for live data."
+      />
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">
           Directory snapshot
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -134,33 +125,33 @@ export default async function Page() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">
           Infrastructure
         </h2>
         <div
-          className={`rounded-2xl border p-5 shadow-sm backdrop-blur-sm ${
+          className={`rounded-2xl border p-6 shadow-sm shadow-sky-200/30 backdrop-blur-md ${
             db.ok
-              ? "border-emerald-200/90 bg-emerald-50/80 dark:border-emerald-800/50 dark:bg-emerald-950/30"
-              : "border-amber-200/90 bg-amber-50/80 dark:border-amber-800/50 dark:bg-amber-950/30"
+              ? "border-emerald-200/90 bg-emerald-50/70"
+              : "border-amber-200/90 bg-amber-50/75"
           }`}
         >
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-sky-700/90 dark:text-sky-300/85">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-600">
                 Database
               </p>
-              <p className="mt-1 text-lg font-semibold text-sky-950 dark:text-sky-50">
+              <p className="sa-panel-title mt-1 text-xl font-semibold text-slate-900">
                 {db.ok ? "Connected" : "Not available"}
               </p>
-              <p className="mt-1 max-w-xl text-sm text-sky-800/90 dark:text-sky-200/80">
+              <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-600">
                 {db.detail}
               </p>
             </div>
             <span
-              className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-semibold ${
+              className={`inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-xs font-semibold ${
                 db.ok
-                  ? "bg-emerald-600/15 text-emerald-900 dark:bg-emerald-400/15 dark:text-emerald-100"
-                  : "bg-amber-600/15 text-amber-950 dark:bg-amber-400/15 dark:text-amber-50"
+                  ? "border-emerald-200/90 bg-white/80 text-emerald-900"
+                  : "border-amber-200/90 bg-white/80 text-amber-950"
               }`}
             >
               {db.ok ? "Healthy" : "Check .env.local"}
@@ -170,7 +161,7 @@ export default async function Page() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">
           Quick actions
         </h2>
         <ul className="grid gap-3 sm:grid-cols-2">
@@ -178,15 +169,15 @@ export default async function Page() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="group flex h-full flex-col rounded-2xl border border-sky-100/90 bg-white/90 p-4 shadow-sm transition hover:border-sky-300/90 hover:shadow-md dark:border-sky-800/50 dark:bg-sky-950/35 dark:hover:border-sky-600/60"
+                className="group flex h-full flex-col rounded-2xl border border-sky-200/80 bg-white/55 p-5 shadow-sm shadow-sky-200/35 backdrop-blur-md transition hover:border-sky-300/90 hover:shadow-md"
               >
-                <span className="text-sm font-semibold text-sky-950 group-hover:text-sky-800 dark:text-sky-50 dark:group-hover:text-sky-100">
+                <span className="sa-panel-title text-base font-semibold text-slate-900 group-hover:text-sky-900">
                   {item.title}
                 </span>
-                <span className="mt-1 text-xs text-sky-700/85 dark:text-sky-300/75">
+                <span className="mt-1 text-xs leading-relaxed text-slate-600">
                   {item.description}
                 </span>
-                <span className="mt-3 text-xs font-medium text-sky-600 group-hover:text-sky-700 dark:text-sky-400 dark:group-hover:text-sky-300">
+                <span className="mt-4 text-xs font-semibold text-sky-600 group-hover:text-sky-700">
                   Open →
                 </span>
               </Link>

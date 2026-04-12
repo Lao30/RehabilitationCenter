@@ -58,11 +58,11 @@ export default function Page() {
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <label className="space-y-1.5">
-            <span className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Date range
             </span>
             <select
-              className="w-full rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm dark:border-sky-700 dark:bg-sky-950"
+              className="w-full rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900"
               defaultValue="30d"
               disabled
             >
@@ -73,11 +73,11 @@ export default function Page() {
             </select>
           </label>
           <label className="space-y-1.5">
-            <span className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Branch
             </span>
             <select
-              className="w-full rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm dark:border-sky-700 dark:bg-sky-950"
+              className="w-full rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900"
               defaultValue="all"
               disabled
             >
@@ -86,11 +86,11 @@ export default function Page() {
             </select>
           </label>
           <label className="space-y-1.5 sm:col-span-2 lg:col-span-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               Compare to
             </span>
             <select
-              className="w-full rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm dark:border-sky-700 dark:bg-sky-950"
+              className="w-full rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900"
               defaultValue="none"
               disabled
             >
@@ -105,7 +105,7 @@ export default function Page() {
       <div className="grid gap-4 lg:grid-cols-3">
         {reportCards.map((r) => (
           <SuperAdminPanel key={r.id} title={r.title} description={r.description}>
-            <ul className="space-y-2 text-xs text-sky-700 dark:text-sky-300">
+            <ul className="space-y-2 text-xs text-slate-600">
               {r.metrics.map((m) => (
                 <li key={m} className="flex gap-2">
                   <span className="text-sky-400" aria-hidden>

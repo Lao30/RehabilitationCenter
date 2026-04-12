@@ -42,19 +42,19 @@ export default function Page() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-sky-100/90 bg-white/90 p-5 shadow-sm dark:border-sky-800/50 dark:bg-sky-950/35">
-          <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+        <div className="rounded-2xl border border-sky-200/80 bg-white/55 p-5 shadow-sm shadow-sky-200/40 backdrop-blur-md">
+          <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">
             Therapists
           </p>
-          <p className="mt-2 text-3xl font-semibold tabular-nums text-sky-950 dark:text-sky-50">
+          <p className="sa-panel-title mt-2 text-3xl font-semibold tabular-nums text-slate-900">
             {therapists.length}
           </p>
         </div>
-        <div className="rounded-2xl border border-sky-100/90 bg-white/90 p-5 shadow-sm dark:border-sky-800/50 dark:bg-sky-950/35 sm:col-span-2 lg:col-span-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+        <div className="rounded-2xl border border-sky-200/80 bg-white/55 p-5 shadow-sm shadow-sky-200/40 backdrop-blur-md sm:col-span-2 lg:col-span-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-sky-600">
             Note
           </p>
-          <p className="mt-2 text-sm text-sky-800 dark:text-sky-200">
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">
             Capacity targets, specialties, and license expiry will appear here
             once profiles are stored in the database.
           </p>
@@ -72,10 +72,10 @@ export default function Page() {
               type="search"
               placeholder="Search therapists…"
               disabled
-              className="min-w-0 flex-1 rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm dark:border-sky-700 dark:bg-sky-950"
+              className="min-w-0 flex-1 rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900"
               aria-label="Search therapists"
             />
-            <p className="text-xs text-sky-600 dark:text-sky-400">
+            <p className="text-xs font-medium text-sky-700">
               {therapists.length} listed
             </p>
           </div>
@@ -94,7 +94,7 @@ export default function Page() {
             {therapists.map((u) => (
               <TR key={u.id}>
                 <TD className="font-medium">{u.name}</TD>
-                <TD className="text-sky-800 dark:text-sky-200">{u.email}</TD>
+                <TD className="text-slate-600">{u.email}</TD>
                 <TD>
                   <RoleBadge role={u.role} />
                 </TD>

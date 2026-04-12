@@ -4,18 +4,21 @@ import { formatRoleLabel } from "@/lib/rbac";
 /** @param {{ eyebrow?: string, title: string, description?: string, actions?: import('react').ReactNode }} props */
 export function SuperAdminPageHeader({ eyebrow, title, description, actions }) {
   return (
-    <header className="flex flex-col gap-4 border-b border-sky-100/90 pb-8 dark:border-sky-800/60 lg:flex-row lg:items-start lg:justify-between">
+    <header className="flex flex-col gap-4 border-b border-sky-200/70 pb-8 lg:flex-row lg:items-start lg:justify-between">
       <div className="space-y-2">
         {eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">
-            {eyebrow}
-          </p>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex h-px w-10 bg-gradient-to-r from-sky-500 to-cyan-400" />
+            <p className="text-[11px] font-semibold uppercase tracking-[0.35em] text-sky-600/90">
+              {eyebrow}
+            </p>
+          </div>
         ) : null}
-        <h1 className="text-2xl font-semibold tracking-tight text-sky-950 dark:text-sky-50">
+        <h1 className="sa-page-title mt-1 text-3xl font-medium tracking-[-0.03em] text-slate-800 sm:text-[1.85rem]">
           {title}
         </h1>
         {description ? (
-          <p className="max-w-2xl text-sky-800/90 dark:text-sky-200/85">
+          <p className="max-w-2xl text-[15px] leading-relaxed text-slate-600">
             {description}
           </p>
         ) : null}
@@ -33,17 +36,17 @@ export function SuperAdminPageHeader({ eyebrow, title, description, actions }) {
 export function SuperAdminPanel({ title, description, children, flush, className = "" }) {
   return (
     <section
-      className={`overflow-hidden rounded-2xl border border-sky-100/90 bg-white/90 shadow-sm backdrop-blur-sm dark:border-sky-800/50 dark:bg-sky-950/35 ${className}`}
+      className={`overflow-hidden rounded-2xl border border-sky-200/80 bg-white/55 shadow-sm shadow-sky-200/40 backdrop-blur-md ${className}`}
     >
       {title || description ? (
-        <div className="border-b border-sky-100/80 px-5 py-4 dark:border-sky-800/50">
+        <div className="border-b border-sky-200/70 bg-white/35 px-5 py-4 backdrop-blur-sm">
           {title ? (
-            <h2 className="text-sm font-semibold text-sky-950 dark:text-sky-50">
+            <h2 className="sa-panel-title text-lg font-semibold tracking-tight text-slate-900">
               {title}
             </h2>
           ) : null}
           {description ? (
-            <p className="mt-1 text-xs text-sky-700/85 dark:text-sky-300/75">
+            <p className="mt-1 text-xs leading-relaxed text-slate-600">
               {description}
             </p>
           ) : null}
@@ -57,7 +60,7 @@ export function SuperAdminPanel({ title, description, children, flush, className
 /** @param {{ children: import('react').ReactNode }} props */
 export function SuperAdminToolbar({ children }) {
   return (
-    <div className="flex flex-col gap-3 border-b border-sky-100/80 bg-sky-50/50 px-4 py-3 dark:border-sky-800/50 dark:bg-sky-950/50 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 border-b border-sky-200/70 bg-sky-50/60 px-4 py-3 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
       {children}
     </div>
   );
@@ -65,16 +68,17 @@ export function SuperAdminToolbar({ children }) {
 
 const roleBadgeClass = {
   [ROLES.SUPER_ADMIN]:
-    "bg-violet-100 text-violet-900 dark:bg-violet-900/45 dark:text-violet-100",
-  [ROLES.ADMIN]:
-    "bg-sky-100 text-sky-900 dark:bg-sky-900/45 dark:text-sky-100",
+    "border border-violet-200/90 bg-violet-50 text-violet-900",
+  [ROLES.ADMIN]: "border border-sky-200/90 bg-sky-50 text-sky-950",
   [ROLES.THERAPIST]:
-    "bg-emerald-100 text-emerald-900 dark:bg-emerald-900/45 dark:text-emerald-100",
+    "border border-emerald-200/90 bg-emerald-50 text-emerald-950",
 };
 
 /** @param {{ role: string }} props */
 export function RoleBadge({ role }) {
-  const cls = roleBadgeClass[role] ?? "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100";
+  const cls =
+    roleBadgeClass[role] ??
+    "border border-slate-200/90 bg-slate-50 text-slate-800";
   return (
     <span
       className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${cls}`}
@@ -85,9 +89,9 @@ export function RoleBadge({ role }) {
 }
 
 const logLevelClass = {
-  info: "bg-sky-100 text-sky-900 dark:bg-sky-900/50 dark:text-sky-100",
-  warn: "bg-amber-100 text-amber-950 dark:bg-amber-900/40 dark:text-amber-50",
-  error: "bg-rose-100 text-rose-950 dark:bg-rose-900/40 dark:text-rose-50",
+  info: "border border-sky-200/90 bg-sky-50 text-sky-950",
+  warn: "border border-amber-200/90 bg-amber-50 text-amber-950",
+  error: "border border-rose-200/90 bg-rose-50 text-rose-950",
 };
 
 /** @param {{ level: 'info' | 'warn' | 'error' }} props */
@@ -107,7 +111,7 @@ export function BtnPrimary({ children, className = "", ...rest }) {
   return (
     <button
       type="button"
-      className={`inline-flex items-center justify-center rounded-lg bg-sky-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-sky-500 ${className}`}
+      className={`inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-sky-500 via-sky-400 to-cyan-500 px-3.5 py-2 text-sm font-semibold text-white shadow-lg shadow-sky-400/35 transition hover:brightness-105 hover:shadow-sky-400/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100 ${className}`}
       {...rest}
     >
       {children}
@@ -120,7 +124,7 @@ export function BtnSecondary({ children, className = "", ...rest }) {
   return (
     <button
       type="button"
-      className={`inline-flex items-center justify-center rounded-lg border border-sky-200/90 bg-white px-3.5 py-2 text-sm font-semibold text-sky-900 shadow-sm transition hover:bg-sky-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-sky-700 dark:bg-sky-950 dark:text-sky-50 dark:hover:bg-sky-900/60 ${className}`}
+      className={`inline-flex items-center justify-center rounded-2xl border border-sky-200/90 bg-white/90 px-3.5 py-2 text-sm font-semibold text-slate-800 shadow-sm shadow-sky-100/50 transition hover:bg-sky-50/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       {...rest}
     >
       {children}
@@ -142,7 +146,7 @@ export function DataTable({ children }) {
 /** @param {{ children: import('react').ReactNode }} props */
 export function THead({ children }) {
   return (
-    <thead className="border-b border-sky-100/90 bg-sky-50/80 text-xs font-semibold uppercase tracking-wider text-sky-600 dark:border-sky-800/60 dark:bg-sky-900/45 dark:text-sky-400">
+    <thead className="border-b border-sky-200/80 bg-sky-50/90 text-xs font-semibold uppercase tracking-wider text-slate-500">
       {children}
     </thead>
   );
@@ -157,7 +161,7 @@ export function TH({ children, className = "" }) {
 export function TD({ children, className = "" }) {
   return (
     <td
-      className={`border-b border-sky-100/70 px-4 py-3 text-sky-900 dark:border-sky-800/40 dark:text-sky-100 ${className}`}
+      className={`border-b border-sky-100/90 px-4 py-3 text-slate-800 ${className}`}
     >
       {children}
     </td>
@@ -175,23 +179,34 @@ export function TBody({ children }) {
 
 /** @param {{ children: import('react').ReactNode }} props */
 export function TR({ children }) {
-  return <tr className="transition hover:bg-sky-50/80 dark:hover:bg-sky-900/30">{children}</tr>;
+  return (
+    <tr className="transition hover:bg-sky-50/70">{children}</tr>
+  );
 }
 
-const inputClass =
-  "w-full rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm text-sky-950 shadow-sm placeholder:text-sky-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60 dark:border-sky-700 dark:bg-sky-950 dark:text-sky-50 dark:focus:border-sky-500 dark:focus:ring-sky-900";
+const fieldLabelClass =
+  "text-xs font-semibold uppercase tracking-wider text-slate-500";
 
-/** @param {import('react').InputHTMLAttributes<HTMLInputElement> & { label: string }} props */
-export function Field({ label, id, className = "", ...rest }) {
+const inputUnderlineClass =
+  "w-full border-0 border-b-2 border-slate-200 bg-transparent pb-2.5 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-0 disabled:opacity-60";
+
+const inputBoxClass =
+  "w-full rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200/80 disabled:cursor-not-allowed disabled:opacity-60";
+
+/** @param {import('react').InputHTMLAttributes<HTMLInputElement> & { label: string, variant?: 'underline' | 'boxed' }} props */
+export function Field({ label, id, className = "", variant = "boxed", ...rest }) {
+  const inputCls = variant === "underline" ? inputUnderlineClass : inputBoxClass;
+  const wrap =
+    variant === "underline" ? "group relative space-y-1.5" : "space-y-1.5";
   return (
-    <div className="space-y-1.5">
-      <label
-        htmlFor={id}
-        className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300"
-      >
+    <div className={wrap}>
+      <label htmlFor={id} className={fieldLabelClass}>
         {label}
       </label>
-      <input id={id} className={`${inputClass} ${className}`} {...rest} />
+      <input id={id} className={`${inputCls} ${className}`} {...rest} />
+      {variant === "underline" ? (
+        <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-sky-500 to-cyan-500 transition-all duration-300 group-focus-within:w-full" />
+      ) : null}
     </div>
   );
 }
@@ -200,13 +215,10 @@ export function Field({ label, id, className = "", ...rest }) {
 export function SelectField({ label, id, children, className = "", ...rest }) {
   return (
     <div className="space-y-1.5">
-      <label
-        htmlFor={id}
-        className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300"
-      >
+      <label htmlFor={id} className={fieldLabelClass}>
         {label}
       </label>
-      <select id={id} className={`${inputClass} ${className}`} {...rest}>
+      <select id={id} className={`${inputBoxClass} ${className}`} {...rest}>
         {children}
       </select>
     </div>
@@ -218,9 +230,9 @@ export function ToggleRow({ label, description, defaultChecked, disabled }) {
   return (
     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
       <div>
-        <p className="text-sm font-medium text-sky-950 dark:text-sky-50">{label}</p>
+        <p className="text-sm font-semibold text-slate-900">{label}</p>
         {description ? (
-          <p className="mt-0.5 text-xs text-sky-700/85 dark:text-sky-300/75">
+          <p className="mt-0.5 text-xs leading-relaxed text-slate-600">
             {description}
           </p>
         ) : null}
@@ -230,9 +242,9 @@ export function ToggleRow({ label, description, defaultChecked, disabled }) {
           type="checkbox"
           defaultChecked={defaultChecked}
           disabled={disabled}
-          className="h-4 w-4 rounded border-sky-300 text-sky-600 focus:ring-sky-500 disabled:opacity-60 dark:border-sky-600 dark:bg-sky-900"
+          className="h-4 w-4 rounded border-sky-300 text-sky-600 focus:ring-sky-500 disabled:opacity-60"
         />
-        <span className="text-xs text-sky-600 dark:text-sky-400">Enabled</span>
+        <span className="text-xs font-medium text-sky-700">Enabled</span>
       </label>
     </div>
   );

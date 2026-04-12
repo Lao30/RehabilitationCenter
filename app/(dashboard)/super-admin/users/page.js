@@ -52,10 +52,10 @@ export default function Page() {
               name="q"
               placeholder="Search by name or email…"
               disabled
-              className="min-w-0 flex-1 rounded-lg border border-sky-200/90 bg-white px-3 py-2 text-sm text-sky-950 shadow-sm placeholder:text-sky-400 dark:border-sky-700 dark:bg-sky-950 dark:text-sky-50"
+              className="min-w-0 flex-1 rounded-xl border border-sky-200/90 bg-white/90 px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400"
               aria-label="Search users"
             />
-            <p className="shrink-0 text-xs text-sky-600 dark:text-sky-400">
+            <p className="shrink-0 text-xs font-medium text-sky-700">
               {SEED_USERS.length} users
             </p>
           </div>
@@ -74,11 +74,11 @@ export default function Page() {
             {SEED_USERS.map((u) => (
               <TR key={u.id}>
                 <TD className="font-medium">{u.name}</TD>
-                <TD className="text-sky-800 dark:text-sky-200">{u.email}</TD>
+                <TD className="text-slate-600">{u.email}</TD>
                 <TD>
                   <RoleBadge role={u.role} />
                 </TD>
-                <TD className="text-sky-800 dark:text-sky-200">
+                <TD className="text-slate-600">
                   {getBranchLabel(u.branchId)}
                 </TD>
                 <TD className="text-right">
@@ -96,29 +96,29 @@ export default function Page() {
 
       <SuperAdminPanel title="Role reference" description="What each role can access in RCMS.">
         <dl className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-sky-100/80 bg-sky-50/40 p-4 dark:border-sky-800/50 dark:bg-sky-900/25">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-violet-700 dark:text-violet-300">
+          <div className="rounded-2xl border border-sky-200/80 bg-white/45 p-4 shadow-sm shadow-sky-200/35 backdrop-blur-md">
+            <dt className="text-xs font-semibold uppercase tracking-wider text-violet-800">
               {formatRoleLabel(ROLES.SUPER_ADMIN)}
             </dt>
-            <dd className="mt-2 text-xs leading-relaxed text-sky-800 dark:text-sky-200">
+            <dd className="mt-2 text-xs leading-relaxed text-slate-600">
               Full platform control: branches, users, settings, reports, and
               logs.
             </dd>
           </div>
-          <div className="rounded-xl border border-sky-100/80 bg-sky-50/40 p-4 dark:border-sky-800/50 dark:bg-sky-900/25">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300">
+          <div className="rounded-2xl border border-sky-200/80 bg-white/45 p-4 shadow-sm shadow-sky-200/35 backdrop-blur-md">
+            <dt className="text-xs font-semibold uppercase tracking-wider text-sky-800">
               {formatRoleLabel(ROLES.ADMIN)}
             </dt>
-            <dd className="mt-2 text-xs leading-relaxed text-sky-800 dark:text-sky-200">
+            <dd className="mt-2 text-xs leading-relaxed text-slate-600">
               Day-to-day operations for one branch: patients, sessions, queue,
               and schedule.
             </dd>
           </div>
-          <div className="rounded-xl border border-sky-100/80 bg-sky-50/40 p-4 dark:border-sky-800/50 dark:bg-sky-900/25">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-300">
+          <div className="rounded-2xl border border-sky-200/80 bg-white/45 p-4 shadow-sm shadow-sky-200/35 backdrop-blur-md">
+            <dt className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
               {formatRoleLabel(ROLES.THERAPIST)}
             </dt>
-            <dd className="mt-2 text-xs leading-relaxed text-sky-800 dark:text-sky-200">
+            <dd className="mt-2 text-xs leading-relaxed text-slate-600">
               Clinical workflows: assigned patients, sessions, and personal
               schedule.
             </dd>
