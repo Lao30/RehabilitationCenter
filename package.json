@@ -1,25 +1,12 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "rehabilitation-center-management-system",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "jose": "^6.2.2",
-    "next": "16.2.3",
-    "pg": "^8.20.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.3",
-    "tailwindcss": "^4"
+    "dev": "npm run dev --prefix my-app",
+    "build": "npm run build --prefix my-app",
+    "start": "npm run start --prefix my-app",
+    "lint": "npm run lint --prefix my-app",
+    "hash-password": "npm run hash-password --prefix my-app",
+    "db:insert-user": "npm run db:insert-user --prefix my-app"
   }
 }
