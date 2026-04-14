@@ -23,7 +23,7 @@ That message is about **connecting to PostgreSQL** using `DATABASE_URL` in **`.e
 
 ---
 
-The app uses **Prisma** (`prisma/schema.prisma`) against the same PostgreSQL **`users`** table as **`db/schema.sql`**: **`user_id`**, **`name`**, **`email`**, **`password`**, **`phone`**, **`role`**, **`status`**, **`created_at`**. After `npm install`, run **`npm run db:generate`** if `postinstall` did not run.
+The app uses **Prisma** (`prisma/schema.prisma`) against the same PostgreSQL **`users`** table as **`db/schema.sql`**: **`user_id`**, **`name`**, **`email`**, **`password`**, **`phone`**, **`role`**, **`status`**, **`created_at`**. After `npm install`, run **`npm run db:generate`** if `postinstall` did not run. Prisma CLI does not load **`.env.local`** by default; use **`npm run db:pull`**, **`db:push`**, etc., or put `DATABASE_URL` in a **`.env`** file in `my-app/`.
 
 - **`password`**: stores a **bcrypt hash** (long string starting with `$2b$`). You type a normal password at login; you **insert the hash** into SQL, not the plain password. This is standard and required for security.
 

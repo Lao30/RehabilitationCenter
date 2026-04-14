@@ -10,10 +10,11 @@
     "hash-password": "node scripts/hash-password.mjs",
     "db:insert-user": "node scripts/insert-user.mjs",
     "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "db:generate": "node scripts/prisma-env.mjs generate",
+    "db:push": "node scripts/prisma-env.mjs db push",
+    "db:pull": "node scripts/prisma-env.mjs db pull",
+    "db:migrate": "node scripts/prisma-env.mjs migrate dev",
+    "db:studio": "node scripts/prisma-env.mjs studio"
   },
   "dependencies": {
     "@prisma/client": "6.19.0",
@@ -24,6 +25,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "dotenv": "^16.4.7",
     "prisma": "6.19.0",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
