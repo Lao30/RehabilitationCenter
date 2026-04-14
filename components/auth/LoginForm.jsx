@@ -22,7 +22,12 @@ export default function LoginForm() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "Sign-in failed");
+        setError(
+          data.error ??
+            (res.status === 403
+              ? "This account cannot sign in here."
+              : "Sign-in failed"),
+        );
         return;
       }
       const path = data.role ? getPathForRole(data.role) : "/";
@@ -130,30 +135,7 @@ export default function LoginForm() {
             )}
           </span>
         </button>
-
-        <div className="rounded-2xl border border-sky-100/90 bg-sky-50/80 p-4 shadow-sm shadow-sky-100/50 backdrop-blur-sm">
-          <p className="text-center text-[10px] font-bold uppercase tracking-[0.28em] text-sky-500/90">
-            Demo
-          </p>
-          <p className="mt-3 text-center text-[13px] leading-relaxed text-slate-600">
-            <span className="block sm:inline">superadmin@rehab.local</span>
-            <span className="hidden sm:inline"> · </span>
-            <span className="block sm:inline">admin@rehab.local</span>
-            <span className="hidden sm:inline"> · </span>
-            <span className="block sm:inline">therapist@rehab.local</span>
-          </p>
-          <p className="mt-3 text-center text-xs text-slate-500">
-            Passcode{" "}
-            <code className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-slate-800">
-              demo123
-            </code>
-          </p>
-        </div>
       </form>
-
-      <p className="auth-enter-delay-2 mt-10 text-center text-[11px] text-sky-600/50">
-        Protected access · Sessions encrypted in transit
-      </p>
     </div>
   );
 }
@@ -165,8 +147,6 @@ function getPathForRole(role) {
       return "/super-admin/dashboard";
     case "ADMIN":
       return "/admin/dashboard";
-    case "THERAPIST":
-      return "/therapist/dashboard";
     default:
       return "/";
   }

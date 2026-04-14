@@ -70,8 +70,6 @@ const roleBadgeClass = {
   [ROLES.SUPER_ADMIN]:
     "border border-violet-200/90 bg-violet-50 text-violet-900",
   [ROLES.ADMIN]: "border border-sky-200/90 bg-sky-50 text-sky-950",
-  [ROLES.THERAPIST]:
-    "border border-emerald-200/90 bg-emerald-50 text-emerald-950",
 };
 
 /** @param {{ role: string }} props */

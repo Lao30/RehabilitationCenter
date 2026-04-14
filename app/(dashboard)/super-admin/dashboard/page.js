@@ -2,29 +2,42 @@ import Link from "next/link";
 import { SuperAdminPageHeader } from "@/components/dashboard/super-admin/PageChrome";
 import { pingDatabase } from "@/lib/db";
 import { ROLES } from "@/constants/roles";
-import { SEED_USERS } from "@/lib/seed-users";
+import DbConnectionAlert from "@/components/dashboard/DbConnectionAlert";
+import { formatPostgresConnectionHelp } from "@/lib/db-errors";
+import { DEMO_BRANCHES } from "@/lib/demo-org";
+import { listUsers } from "@/lib/users";
 
 export const metadata = {
   title: "Super Admin · Dashboard",
 };
 
-function collectSnapshot() {
-  const branchIds = new Set(
-    SEED_USERS.map((u) => u.branchId).filter(Boolean),
-  );
-  const roleCounts = {
+async function collectSnapshot() {
+  const emptyRoles = {
     [ROLES.SUPER_ADMIN]: 0,
     [ROLES.ADMIN]: 0,
-    [ROLES.THERAPIST]: 0,
   };
-  for (const u of SEED_USERS) {
-    if (roleCounts[u.role] !== undefined) roleCounts[u.role] += 1;
+  try {
+    const users = await listUsers();
+    const roleCounts = { ...emptyRoles };
+    for (const u of users) {
+      if (roleCounts[u.role] !== undefined) roleCounts[u.role] += 1;
+    }
+    return {
+      ok: true,
+      connectionHint: null,
+      branchCount: DEMO_BRANCHES.length,
+      roleCounts,
+      totalUsers: users.length,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      connectionHint: formatPostgresConnectionHelp(err),
+      branchCount: DEMO_BRANCHES.length,
+      roleCounts: emptyRoles,
+      totalUsers: 0,
+    };
   }
-  return {
-    branchCount: branchIds.size,
-    roleCounts,
-    totalUsers: SEED_USERS.length,
-  };
 }
 
 async function getDbStatus() {
@@ -65,11 +78,6 @@ const quickLinks = [
     description: "Locations and branch defaults",
   },
   {
-    href: "/super-admin/therapists",
-    title: "Therapists",
-    description: "Capacity and assignments across branches",
-  },
-  {
     href: "/super-admin/reports",
     title: "Reports",
     description: "Cross-branch analytics and exports",
@@ -87,7 +95,7 @@ const quickLinks = [
 ];
 
 export default async function Page() {
-  const snapshot = collectSnapshot();
+  const snapshot = await collectSnapshot();
   const db = await getDbStatus();
 
   return (
@@ -95,18 +103,20 @@ export default async function Page() {
       <SuperAdminPageHeader
         eyebrow="Platform overview"
         title="Super Admin dashboard"
-        description="High-level view of tenants, people, and infrastructure. Figures below use the current demo directory until the database is wired for live data."
+        description="High-level view of tenants, people, and infrastructure. User counts come from the users table in PostgreSQL."
       />
+
+      <DbConnectionAlert message={snapshot.ok === false ? snapshot.connectionHint : null} />
 
       <section className="space-y-3">
         <h2 className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-600">
           Directory snapshot
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           <StatCard
             label="Branches"
             value={snapshot.branchCount}
-            hint="Distinct branch IDs in demo accounts"
+            hint="Listed in Branches (demo catalog)"
           />
           <StatCard
             label="Super admins"
@@ -115,10 +125,6 @@ export default async function Page() {
           <StatCard
             label="Branch admins"
             value={snapshot.roleCounts[ROLES.ADMIN]}
-          />
-          <StatCard
-            label="Therapists"
-            value={snapshot.roleCounts[ROLES.THERAPIST]}
             hint={`${snapshot.totalUsers} users total`}
           />
         </div>

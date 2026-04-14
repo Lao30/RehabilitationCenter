@@ -106,7 +106,7 @@ export default function AuthLayout({ children }) {
                 </span>
               </h1>
               <p className="mt-8 text-[15px] leading-relaxed text-slate-600">
-                One calm console for branches, therapists, and the people you
+                One calm console for branches, admins, and the people you
                 help—sessions, queue, and care coordination in sync.
               </p>
               <ul

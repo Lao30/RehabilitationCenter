@@ -15,11 +15,7 @@ export async function middleware(request) {
   try {
     const payload = await verifySessionToken(token);
     const r = String(payload.role ?? "");
-    if (
-      r !== ROLES.SUPER_ADMIN &&
-      r !== ROLES.ADMIN &&
-      r !== ROLES.THERAPIST
-    ) {
+    if (r !== ROLES.SUPER_ADMIN && r !== ROLES.ADMIN) {
       return NextResponse.redirect(loginUrl);
     }
     role = r;
@@ -36,9 +32,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: [
-    "/super-admin/:path*",
-    "/admin/:path*",
-    "/therapist/:path*",
-  ],
+  matcher: ["/super-admin/:path*", "/admin/:path*"],
 };

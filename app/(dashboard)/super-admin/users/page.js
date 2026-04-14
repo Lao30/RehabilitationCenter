@@ -12,22 +12,32 @@ import {
   THead,
   TR,
 } from "@/components/dashboard/super-admin/PageChrome";
+import DbConnectionAlert from "@/components/dashboard/DbConnectionAlert";
 import { ROLES } from "@/constants/roles";
-import { getBranchLabel } from "@/lib/demo-org";
+import { formatPostgresConnectionHelp } from "@/lib/db-errors";
 import { formatRoleLabel } from "@/lib/rbac";
-import { SEED_USERS } from "@/lib/seed-users";
+import { displayNameFromEmail, listUsers } from "@/lib/users";
 
 export const metadata = {
   title: "Users & roles",
 };
 
-export default function Page() {
+export default async function Page() {
+  let users = [];
+  let dbError = null;
+  try {
+    users = await listUsers();
+  } catch (err) {
+    dbError = formatPostgresConnectionHelp(err);
+  }
+
   return (
     <div className="space-y-8">
+      <DbConnectionAlert message={dbError} />
       <SuperAdminPageHeader
         eyebrow="Directory"
         title="Users & roles"
-        description="Create accounts, assign Super Admin, Admin, or Therapist roles, and link users to a branch. Demo data comes from seed users until persistence is connected."
+        description="Accounts live in PostgreSQL (users table). Add or change rows with SQL or your DB client; in-app user management can be added later."
         actions={
           <>
             <BtnSecondary disabled title="Coming soon">
@@ -42,7 +52,7 @@ export default function Page() {
 
       <SuperAdminPanel
         title="All users"
-        description="Platform-wide directory. Actions are disabled in this preview build."
+        description="Platform-wide directory from the database. Edit/delete actions can be wired later."
         flush
       >
         <SuperAdminToolbar>
@@ -56,30 +66,29 @@ export default function Page() {
               aria-label="Search users"
             />
             <p className="shrink-0 text-xs font-medium text-sky-700">
-              {SEED_USERS.length} users
+              {users.length} users
             </p>
           </div>
         </SuperAdminToolbar>
         <DataTable>
           <THead>
             <tr>
-              <TH>Name</TH>
+              <TH>Display name</TH>
               <TH>Email</TH>
               <TH>Role</TH>
-              <TH>Branch</TH>
               <TH className="text-right">Actions</TH>
             </tr>
           </THead>
           <TBody>
-            {SEED_USERS.map((u) => (
+            {users.map((u) => (
               <TR key={u.id}>
-                <TD className="font-medium">{u.name}</TD>
+                <TD className="font-medium">
+                  {(u.name && String(u.name).trim()) ||
+                    displayNameFromEmail(u.email)}
+                </TD>
                 <TD className="text-slate-600">{u.email}</TD>
                 <TD>
                   <RoleBadge role={u.role} />
-                </TD>
-                <TD className="text-slate-600">
-                  {getBranchLabel(u.branchId)}
                 </TD>
                 <TD className="text-right">
                   <div className="flex justify-end gap-2">
@@ -95,7 +104,7 @@ export default function Page() {
       </SuperAdminPanel>
 
       <SuperAdminPanel title="Role reference" description="What each role can access in RCMS.">
-        <dl className="grid gap-4 sm:grid-cols-3">
+        <dl className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-sky-200/80 bg-white/45 p-4 shadow-sm shadow-sky-200/35 backdrop-blur-md">
             <dt className="text-xs font-semibold uppercase tracking-wider text-violet-800">
               {formatRoleLabel(ROLES.SUPER_ADMIN)}
@@ -112,15 +121,6 @@ export default function Page() {
             <dd className="mt-2 text-xs leading-relaxed text-slate-600">
               Day-to-day operations for one branch: patients, sessions, queue,
               and schedule.
-            </dd>
-          </div>
-          <div className="rounded-2xl border border-sky-200/80 bg-white/45 p-4 shadow-sm shadow-sky-200/35 backdrop-blur-md">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-emerald-800">
-              {formatRoleLabel(ROLES.THERAPIST)}
-            </dt>
-            <dd className="mt-2 text-xs leading-relaxed text-slate-600">
-              Clinical workflows: assigned patients, sessions, and personal
-              schedule.
             </dd>
           </div>
         </dl>

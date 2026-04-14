@@ -25,7 +25,7 @@ export default function Page() {
       <SuperAdminPageHeader
         eyebrow="Organization"
         title="Branches"
-        description="Configure locations, codes, and contact details. Each branch can host its own admins and therapists."
+        description="Configure locations, codes, and contact details. Each branch can host its own admins."
         actions={
           <>
             <BtnSecondary disabled title="Coming soon">
@@ -67,7 +67,7 @@ export default function Page() {
 
       <SuperAdminPanel
         title="Branch directory"
-        description="Demo list aligned with seed user branch IDs."
+        description="Branch catalog; align branch_id on user rows with these ids."
         flush
       >
         <SuperAdminToolbar>

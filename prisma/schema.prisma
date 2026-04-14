@@ -1,0 +1,26 @@
+// RCMS — maps to existing PostgreSQL tables (see db/schema.sql).
+// Use Prisma 6.x (package.json pins 6.19.0). Prisma 7+ uses a different config format.
+// After changing this file: npm run db:generate
+// New DB from scratch: npm run db:push (or apply db/schema.sql then db:pull to sync).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId    Int      @id @default(autoincrement()) @map("user_id")
+  name      String
+  email     String
+  password  String
+  phone     String?
+  role      String   @db.VarChar(20)
+  status    String   @default("active") @db.VarChar(20)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  @@map("users")
+}
