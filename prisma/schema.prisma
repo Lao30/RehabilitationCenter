@@ -52,9 +52,26 @@ model branches {
   updated_at       DateTime           @default(now()) @db.Timestamptz(6)
   audit_logs       audit_logs[]
   notifications    notifications[]
-  patients         patients[]
-  queue_entries    queue_entries[]
-  therapy_sessions therapy_sessions[]
+  patients                  patients[]
+  queue_entries             queue_entries[]
+  therapy_sessions          therapy_sessions[]
+  rehabilitation_records    rehabilitation_records[]
+  therapists                therapists[]
+  guardians                 guardians[]
+  branch_holidays           branch_holidays[]
+  wa_notification_logs      wa_notification_logs[]
+}
+
+/// Hari libur cabang (tampilan kalender sesi)
+model branch_holidays {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branch_id    String    @db.Uuid
+  holiday_date DateTime  @db.Date
+  name         String    @db.VarChar(200)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+  branches     branches  @relation(fields: [branch_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([branch_id, holiday_date(sort: Asc)], map: "idx_branch_holidays_branch_date")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -86,14 +103,28 @@ model patients {
   date_of_birth     DateTime?          @db.Date
   phone             String?            @db.VarChar(50)
   email             String?            @db.VarChar(320)
+  /// e.g. FISIK, MOTORIK, INTELEKTUAL — used on admin dashboard charts
+  disability_type   String?            @db.VarChar(64)
+  /// Alamat singkat untuk tampilan daftar pasien
+  address                  String?
+  /// Skor Barthel Index 0–100 (opsional)
+  barthel_score            Int?
+  /// BPJS | SUBSIDI | UMUM | GRATIS — untuk laporan kategori pembayaran
+  payment_category         String?            @db.VarChar(32)
+  /// Diagnosa utama (teks bebas) — untuk grafik diagnosa terbanyak
+  primary_diagnosis        String?            @db.VarChar(200)
+  /// Nama terapis utama untuk tampilan daftar (denormalisasi hingga integrasi akun)
+  primary_therapist_name   String?            @db.VarChar(200)
   notes             String?
   is_active         Boolean            @default(true)
   created_at        DateTime           @default(now()) @db.Timestamptz(6)
   updated_at        DateTime           @default(now()) @db.Timestamptz(6)
   notifications     notifications[]
   branches          branches           @relation(fields: [branch_id], references: [id], onUpdate: NoAction)
-  queue_entries     queue_entries[]
-  therapy_sessions  therapy_sessions[]
+  queue_entries             queue_entries[]
+  therapy_sessions          therapy_sessions[]
+  rehabilitation_records    rehabilitation_records[]
+  guardian_patients           guardian_patients[]
 
   @@unique([branch_id, medical_record_no], map: "uq_patients_branch_mrn")
   @@index([branch_id], map: "idx_patients_branch")
@@ -150,6 +181,94 @@ model therapy_sessions {
   @@index([patient_id], map: "idx_sessions_patient")
   @@index([branch_id, status], map: "idx_sessions_status")
   @@index([therapist_user_id], map: "idx_sessions_therapist")
+}
+
+/// Catatan rekam rehabilitasi per sesi / kunjungan
+model rehabilitation_records {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branch_id        String    @db.Uuid
+  patient_id       String    @db.Uuid
+  session_number   Int       @default(1)
+  record_date      DateTime  @db.Date
+  therapist_name   String?   @db.VarChar(200)
+  complaints       String?
+  program_therapy  String?
+  assessment       String?   @db.VarChar(120)
+  motorik_adl      String?   @db.VarChar(160)
+  note_clinical    String?
+  note_progress    String?
+  is_active        Boolean   @default(true)
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+  patients         patients  @relation(fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  branches         branches  @relation(fields: [branch_id], references: [id], onUpdate: NoAction)
+
+  @@index([branch_id, record_date(sort: Desc)], map: "rehabilitation_records_branch_record_idx")
+  @@index([patient_id, record_date(sort: Desc)], map: "rehabilitation_records_patient_record_idx")
+}
+
+/// Profil terapis untuk tampilan admin (jadwal & ringkasan pasien)
+model therapists {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branch_id        String   @db.Uuid
+  display_name     String   @db.VarChar(200)
+  specialization   String   @db.VarChar(120)
+  schedule_days    String   @db.VarChar(240)
+  schedule_hours   String   @db.VarChar(120)
+  branch_label     String   @default("Pusat") @db.VarChar(80)
+  total_patients   Int      @default(0)
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime @updatedAt @db.Timestamptz(6)
+  branches         branches @relation(fields: [branch_id], references: [id], onUpdate: NoAction)
+
+  @@index([branch_id], map: "idx_therapists_branch")
+}
+
+/// Wali pasien (akses portal / notifikasi)
+model guardians {
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branch_id          String               @db.Uuid
+  full_name          String               @db.VarChar(200)
+  email              String               @db.VarChar(320)
+  phone              String               @db.VarChar(50)
+  relationship       String               @db.VarChar(40)
+  last_login_at      DateTime?            @db.Timestamptz(6)
+  is_active          Boolean              @default(true)
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime             @updatedAt @db.Timestamptz(6)
+  branches           branches             @relation(fields: [branch_id], references: [id], onUpdate: NoAction)
+  guardian_patients  guardian_patients[]
+  wa_notification_logs wa_notification_logs[]
+
+  @@unique([branch_id, email], map: "uq_guardian_branch_email")
+  @@index([branch_id], map: "idx_guardians_branch")
+}
+
+model guardian_patients {
+  guardian_id String    @db.Uuid
+  patient_id  String    @db.Uuid
+  guardians   guardians @relation(fields: [guardian_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  patients    patients  @relation(fields: [patient_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([guardian_id, patient_id])
+}
+
+/// Log pengiriman notifikasi WhatsApp (buka wa.me dari admin)
+model wa_notification_logs {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branch_id        String    @db.Uuid
+  guardian_id      String?   @db.Uuid
+  recipient_name   String    @db.VarChar(200)
+  recipient_phone  String    @db.VarChar(50)
+  template_key     String    @db.VarChar(64)
+  message_body     String
+  status           String    @default("terkirim") @db.VarChar(32)
+  created_at       DateTime  @default(now()) @db.Timestamptz(6)
+  branches         branches  @relation(fields: [branch_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  guardians        guardians? @relation(fields: [guardian_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@index([branch_id, created_at(sort: Desc)], map: "idx_wa_logs_branch_created")
 }
 
 enum app_role {

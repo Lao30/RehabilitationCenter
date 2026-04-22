@@ -1,10 +1,10 @@
-import PatientsPageClient from "@/components/dashboard/admin/PatientsPageClient";
-import { listPatientsForAdmin } from "@/lib/admin-patients";
+import GuardiansPageClient from "@/components/dashboard/admin/GuardiansPageClient";
+import { loadGuardiansDashboard } from "@/lib/admin-guardians";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Data pasien",
+  title: "Manajemen wali pasien",
 };
 
 export default async function Page() {
@@ -13,12 +13,13 @@ export default async function Page() {
     redirect("/login");
   }
 
-  const { rows, ok, connectionHint } = await listPatientsForAdmin(
+  const { stats, rows, ok, connectionHint } = await loadGuardiansDashboard(
     session.branchId,
   );
 
   return (
-    <PatientsPageClient
+    <GuardiansPageClient
+      stats={stats}
       rows={rows}
       connectionHint={ok === false ? connectionHint : null}
     />

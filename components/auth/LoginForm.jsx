@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ export default function LoginForm() {
     <div className="auth-enter">
       <header className="mb-10 lg:mb-12">
         <div className="flex items-center gap-3">
-          <span className="inline-flex h-px w-10 bg-gradient-to-r from-sky-500 to-cyan-400" />
+          <span className="inline-flex h-px w-10 bg-linear-to-r from-sky-500 to-cyan-400" />
           <span className="text-[11px] font-semibold uppercase tracking-[0.35em] text-sky-600/80">
             Secure access
           </span>
@@ -77,7 +78,7 @@ export default function LoginForm() {
             placeholder="name@center.org"
             className="w-full border-0 border-b-2 border-slate-200 bg-transparent pb-3 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-0"
           />
-          <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-sky-500 to-cyan-500 transition-all duration-300 group-focus-within:w-full" />
+          <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-sky-500 to-cyan-500 transition-all duration-300 group-focus-within:w-full" />
         </div>
 
         <div className="group relative">
@@ -98,7 +99,7 @@ export default function LoginForm() {
             placeholder="••••••••"
             className="w-full border-0 border-b-2 border-slate-200 bg-transparent pb-3 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-0"
           />
-          <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-0 bg-gradient-to-r from-sky-500 to-cyan-500 transition-all duration-300 group-focus-within:w-full" />
+          <span className="pointer-events-none absolute bottom-0 left-0 h-0.5 w-0 bg-linear-to-r from-sky-500 to-cyan-500 transition-all duration-300 group-focus-within:w-full" />
         </div>
 
         {error ? (
@@ -113,7 +114,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="group flex h-[3.25rem] w-full items-center justify-center rounded-2xl bg-gradient-to-r from-sky-500 via-sky-400 to-cyan-500 text-[15px] font-semibold text-white shadow-lg shadow-sky-400/35 transition hover:brightness-105 hover:shadow-sky-400/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
+          className="group flex h-13 w-full items-center justify-center rounded-2xl bg-linear-to-r from-sky-500 via-sky-400 to-cyan-500 text-[15px] font-semibold text-white shadow-lg shadow-sky-400/35 transition hover:brightness-105 hover:shadow-sky-400/45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:brightness-100"
         >
           <span className="flex items-center gap-2">
             {pending ? (
@@ -135,6 +136,16 @@ export default function LoginForm() {
             )}
           </span>
         </button>
+
+        <p className="text-center text-[13px] leading-relaxed text-slate-500">
+          Baru di sistem?{" "}
+          <Link
+            href="/use-cases"
+            className="font-semibold text-sky-700 underline decoration-sky-300/80 underline-offset-4 transition hover:text-sky-900"
+          >
+            Lihat use case peran
+          </Link>
+        </p>
       </form>
     </div>
   );
