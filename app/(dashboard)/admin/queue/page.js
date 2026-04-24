@@ -1,13 +1,27 @@
-import Placeholder from "@/components/dashboard/Placeholder";
+import QueueBoardClient from "@/components/dashboard/admin/QueueBoardClient";
+import { listTodayQueueBoard } from "@/lib/admin-queue";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Queue",
+  title: "Sesi & antrian",
 };
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login");
+  }
+
+  const { waiting, called, completed, ok, connectionHint } =
+    await listTodayQueueBoard(session.branchId);
+
   return (
-    <Placeholder title="Queue">
-      Waiting list and triage for today&apos;s flow.
-    </Placeholder>
+    <QueueBoardClient
+      waiting={waiting}
+      called={called}
+      completed={completed}
+      connectionHint={ok === false ? connectionHint : null}
+    />
   );
 }

@@ -1,13 +1,27 @@
-import Placeholder from "@/components/dashboard/Placeholder";
+import WhatsAppNotificationsClient from "@/components/dashboard/admin/WhatsAppNotificationsClient";
+import { loadWhatsAppNotificationsPage } from "@/lib/admin-wa-notifications";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Notifications",
+  title: "Notifikasi WhatsApp",
 };
 
-export default function Page() {
+export default async function Page() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login");
+  }
+
+  const { guardians, logs, ok, connectionHint } = await loadWhatsAppNotificationsPage(
+    session.branchId,
+  );
+
   return (
-    <Placeholder title="Notifications">
-      Send reminders to patients or staff (placeholder).
-    </Placeholder>
+    <WhatsAppNotificationsClient
+      guardians={guardians}
+      logs={logs}
+      connectionHint={ok === false ? connectionHint : null}
+    />
   );
 }

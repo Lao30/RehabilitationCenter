@@ -1,13 +1,19 @@
-import Placeholder from "@/components/dashboard/Placeholder";
+import AdminDashboardView from "@/components/dashboard/admin/AdminDashboardView";
+import { loadAdminDashboard } from "@/lib/admin-dashboard";
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Admin · Dashboard",
 };
 
-export default function Page() {
-  return (
-    <Placeholder title="Operational dashboard">
-      Today&apos;s sessions, queue health, and branch KPIs (placeholder).
-    </Placeholder>
-  );
+export default async function Page() {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login");
+  }
+
+  const dash = await loadAdminDashboard(session.branchId);
+
+  return <AdminDashboardView greetingName={session.name} dash={dash} />;
 }
